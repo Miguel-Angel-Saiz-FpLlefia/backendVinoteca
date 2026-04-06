@@ -35,6 +35,8 @@ app.get("/api/health", (_req, res) => {
 });
 
 // 3. Rutas
+// Mitigación para Vercel: expone /api/login y /api/register en un solo nivel.
+app.use("/api", require("./routes/authRoutes"));
 app.use("/api/auth", require("./routes/authRoutes"));
 // Vercel puede interceptar /api/auth/*; exponemos una ruta alternativa estable.
 app.use("/api/session", require("./routes/authRoutes"));
