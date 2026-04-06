@@ -12,7 +12,6 @@ const corsOptions = {
 
 // 1. Middlewares Globales
 app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
 app.use(express.json()); // Para leer JSON en el body
 app.use("/uploads", express.static("uploads")); // Para servir fotos
 
