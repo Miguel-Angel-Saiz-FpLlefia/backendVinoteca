@@ -1,0 +1,157 @@
+### Variables
+@api = http://localhost:4000/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjliOWE5NTY1NzdmYzU0MTNiMzAwMzk5Iiwicm9sZSI6ImFkbWluIn0sImlhdCI6MTc3NTQyNzcyOCwiZXhwIjoxNzc1NTE0MTI4fQ.kpzW3fXwGTP0gJ5_8SO-Ab9Km61iZDUlamRKb6IG6ZA
+
+############################################################
+# AUTHENTICATION
+############################################################
+
+### 1. Registro de Usuario (Multipart Form Data para la foto)
+# Nota: REST Client tiene limitaciones con archivos locales reales. 
+# Asegúrate de que el campo "foto" coincida con tu upload.single('foto')
+### 1. Registro (Versión simplificada)
+POST http://127.0.0.1:4000/api/auth/register
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="nombre"
+
+miguel editor
+--boundary
+Content-Disposition: form-data; name="email"
+
+migueledit@gmail.com
+--boundary
+Content-Disposition: form-data; name="password"
+
+1234
+--boundary
+Content-Disposition: form-data; name="foto"; filename="avatar.jpg"
+Content-Type: image/jpeg
+
+< ./avatar.jpg
+--boundary--
+
+### 2. Login (Obtener el Token)
+# @name login
+POST {{api}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "test@gmail.com",
+    "password": "1234"
+}
+
+############################################################
+# VINOS Y CERVEZAS
+############################################################
+
+### 3. Ver todos los vinos (Público)
+GET {{api}}/vinos
+
+### 4. Ver todas las cervezas (Público)
+GET {{api}}/cervezas
+
+### 4b. Crear un vino con imagen (Solo Admin)
+POST {{api}}/vinos
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="nom"
+
+Vino de prueba
+--boundary
+Content-Disposition: form-data; name="anioFermentacion"
+
+2020
+--boundary
+Content-Disposition: form-data; name="descripcio"
+
+Vino cargado con imagen
+--boundary
+Content-Disposition: form-data; name="tipus"
+
+Tinto
+--boundary
+Content-Disposition: form-data; name="price"
+
+19.95
+--boundary
+Content-Disposition: form-data; name="imagen"; filename="vino.jpg"
+Content-Type: image/jpeg
+
+< ./vino.jpg
+--boundary--
+
+### 4c. Crear una cerveza con imagen (Solo Admin)
+POST {{api}}/cervezas
+Authorization: Bearer {{token}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="nom"
+
+Cerveza de prueba
+--boundary
+Content-Disposition: form-data; name="graduacio"
+
+5.2
+--boundary
+Content-Disposition: form-data; name="tipus"
+
+IPA
+--boundary
+Content-Disposition: form-data; name="descripcio"
+
+Cerveza cargada con imagen
+--boundary
+Content-Disposition: form-data; name="price"
+
+4.75
+--boundary
+Content-Disposition: form-data; name="imagen"; filename="cerveza.jpg"
+Content-Type: image/jpeg
+
+< ./cerveza.jpg
+--boundary--
+
+############################################################
+# PEDIDOS
+############################################################
+
+### 5. Crear un pedido (Usuario Logueado)
+POST {{api}}/pedidos
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjliOWE5NTY1NzdmYzU0MTNiMzAwMzk5Iiwicm9sZSI6InVzZXIifSwiaWF0IjoxNzczNzc1NDQ2LCJleHAiOjE3NzM4NjE4NDZ9.o_3SqORhCiabyQCqJ3WcuznayyFake7gDQ8V6fk61_0
+Content-Type: application/json
+
+
+{
+    "user": "69b9a956577fc5413b300399",
+    "productos": [
+        {
+            "productoId": "69b9a921577fc5413b300396",
+            "productoModelo": "Vino",
+            "cantidad": 2,
+            "precioUnidad": 89.99
+        }
+    ],
+    "total": 179.98
+}
+
+############################################################
+# GESTIÓN DE USUARIOS (ADMIN)
+############################################################
+
+### 6. Listar todos los usuarios
+GET {{api}}/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjliOWE2MDY1NzdmYzU0MTNiMzAwMzg0Iiwicm9sZSI6InVzZXIifSwiaWF0IjoxNzczNzc0NjcyLCJleHAiOjE3NzM4NjEwNzJ9.wASVpDH6u8HQXj8t4rs0IsILktJQ3ywn5AMzf2KqpY8
+
+### 7. Cambiar rol a Admin
+PATCH {{api}}/users/69b9a606577fc5413b300384/role
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjliOWE2MDY1NzdmYzU0MTNiMzAwMzg0Iiwicm9sZSI6InVzZXIifSwiaWF0IjoxNzczNzc0ODkzLCJleHAiOjE3NzM4NjEyOTN9.tlCa7kBkWcGSXIB01xosPF_bEjcYwDUSGEKXLCjeyj0
+Content-Type: application/json
+
+{
+    "role": "admin"
+}

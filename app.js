@@ -1,0 +1,29 @@
+const express = require("express");
+const cors = require("cors");
+require("dotenv").config();
+const connectDB = require("./config/db");
+
+const app = express();
+
+// 1. Conexión a Base de Datos
+connectDB();
+
+// 2. Middlewares Globales
+app.use(
+  cors({
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  }),
+);
+app.use(express.json()); // Para leer JSON en el body
+app.use("/uploads", express.static("uploads")); // Para servir fotos
+
+// 3. Rutas
+app.use("/api/auth", require("./routes/authRoutes"));
+app.use("/api/vinos", require("./routes/routerVinos"));
+app.use("/api/cervezas", require("./routes/routesCervezas"));
+app.use("/api/pedidos", require("./routes/pedidoRoutes"));
+app.use("/api/users", require("./routes/userRoutes"));
+
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`Servidor volando en el puerto ${PORT}`));
