@@ -4,7 +4,6 @@ require("dotenv").config();
 const connectDB = require("./config/db");
 
 const app = express();
-const dbReady = connectDB();
 
 const corsOptions = {
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
@@ -17,10 +16,13 @@ app.options("*", cors(corsOptions));
 app.use(express.json()); // Para leer JSON en el body
 app.use("/uploads", express.static("uploads")); // Para servir fotos
 
-// 2. Conexión a Base de Datos
-app.use(async (_req, res, next) => {
+app.use(async (req, res, next) => {
+  if (req.method === "OPTIONS" || req.path === "/api/health") {
+    return next();
+  }
+
   try {
-    await dbReady;
+    await connectDB();
     next();
   } catch (error) {
     res.status(500).json({
