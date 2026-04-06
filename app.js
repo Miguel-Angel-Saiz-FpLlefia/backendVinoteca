@@ -25,5 +25,9 @@ app.use("/api/cervezas", require("./routes/routesCervezas"));
 app.use("/api/pedidos", require("./routes/pedidoRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
 
-const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`Servidor volando en el puerto ${PORT}`));
+if (require.main === module) {
+  const PORT = process.env.PORT || 4000;
+  app.listen(PORT, () => console.log(`Servidor volando en el puerto ${PORT}`));
+}
+
+module.exports = app;
