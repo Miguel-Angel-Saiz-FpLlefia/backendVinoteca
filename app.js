@@ -4,9 +4,21 @@ require("dotenv").config();
 const connectDB = require("./config/db");
 
 const app = express();
+const dbReady = connectDB();
 
 // 1. Conexión a Base de Datos
-connectDB();
+app.use(async (_req, res, next) => {
+  try {
+    await dbReady;
+    next();
+  } catch (error) {
+    res
+      .status(500)
+      .json({
+        error: `Error de conexión a la base de datos: ${error.message}`,
+      });
+  }
+});
 
 // 2. Middlewares Globales
 app.use(
@@ -17,6 +29,10 @@ app.use(
 );
 app.use(express.json()); // Para leer JSON en el body
 app.use("/uploads", express.static("uploads")); // Para servir fotos
+
+app.get("/api/health", (_req, res) => {
+  res.json({ ok: true, message: "Backend funcionando" });
+});
 
 // 3. Rutas
 app.use("/api/auth", require("./routes/authRoutes"));
