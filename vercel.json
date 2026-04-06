@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/api/auth/:path*",
+      "destination": "/api/auth-public/:path*"
+    },
+    {
       "source": "/",
       "destination": "/api/health"
     }
