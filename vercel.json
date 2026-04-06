@@ -1,12 +1,15 @@
 {
-  "rewrites": [
+  "version": 2,
+  "builds": [
     {
-      "source": "/api/auth/:path*",
-      "destination": "/api/session/:path*"
-    },
+      "src": "app.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
     {
-      "source": "/",
-      "destination": "/api/health"
+      "src": "/(.*)",
+      "dest": "/app.js"
     }
   ]
 }
