@@ -6,29 +6,28 @@ const connectDB = require("./config/db");
 const app = express();
 const dbReady = connectDB();
 
-// 1. Conexión a Base de Datos
+const corsOptions = {
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+// 1. Middlewares Globales
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
+app.use(express.json()); // Para leer JSON en el body
+app.use("/uploads", express.static("uploads")); // Para servir fotos
+
+// 2. Conexión a Base de Datos
 app.use(async (_req, res, next) => {
   try {
     await dbReady;
     next();
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        error: `Error de conexión a la base de datos: ${error.message}`,
-      });
+    res.status(500).json({
+      error: `Error de conexión a la base de datos: ${error.message}`,
+    });
   }
 });
-
-// 2. Middlewares Globales
-app.use(
-  cors({
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  }),
-);
-app.use(express.json()); // Para leer JSON en el body
-app.use("/uploads", express.static("uploads")); // Para servir fotos
 
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, message: "Backend funcionando" });
