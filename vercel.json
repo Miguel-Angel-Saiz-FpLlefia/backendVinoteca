@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/auth/:path*",
-      "destination": "/api/auth-public/:path*"
+      "destination": "/api/session/:path*"
     },
     {
       "source": "/",

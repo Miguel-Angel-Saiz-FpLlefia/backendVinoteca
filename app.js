@@ -36,8 +36,8 @@ app.get("/api/health", (_req, res) => {
 
 // 3. Rutas
 app.use("/api/auth", require("./routes/authRoutes"));
-// Alias para producción en Vercel cuando /api/auth/* no se resuelve correctamente.
-app.use("/api/auth-public", require("./routes/authRoutes"));
+// Vercel puede interceptar /api/auth/*; exponemos una ruta alternativa estable.
+app.use("/api/session", require("./routes/authRoutes"));
 app.use("/api/vinos", require("./routes/routerVinos"));
 app.use("/api/cervezas", require("./routes/routesCervezas"));
 app.use("/api/pedidos", require("./routes/pedidoRoutes"));
