@@ -3,6 +3,29 @@ const toDataUrl = (file) => {
   return `data:${file.mimetype};base64,${file.buffer.toString("base64")}`;
 };
 
+const isLikelyImageReference = (value) => {
+  if (typeof value !== "string" || !value.trim()) return false;
+
+  return (
+    value.startsWith("data:image/") ||
+    value.startsWith("http://") ||
+    value.startsWith("https://") ||
+    value.startsWith("/uploads/") ||
+    value.startsWith("uploads/") ||
+    /\.(jpe?g|png|webp|gif)$/i.test(value)
+  );
+};
+
+const normalizeImageReference = (value) => {
+  if (!isLikelyImageReference(value)) return undefined;
+
+  if (value.startsWith("uploads/")) {
+    return `/${value}`;
+  }
+
+  return value;
+};
+
 const getUploadedFile = (req) => {
   if (req.file) return req.file;
   if (Array.isArray(req.files) && req.files.length > 0) {
@@ -21,9 +44,11 @@ const getStoredImageValue = (fileOrReq, fallback) => {
 
   const file = looksLikeFile ? fileOrReq : getUploadedFile(fileOrReq);
 
-  if (!file) return fallback;
-  if (file.path) return file.path;
-  return toDataUrl(file) ?? fallback;
+  const normalizedFallback = normalizeImageReference(fallback);
+
+  if (!file) return normalizedFallback;
+  if (file.path) return normalizeImageReference(file.path);
+  return toDataUrl(file) ?? normalizedFallback;
 };
 
 module.exports = { getStoredImageValue, getUploadedFile };

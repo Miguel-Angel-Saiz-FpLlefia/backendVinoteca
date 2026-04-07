@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { getStoredImageValue } = require("../utils/imageStorage");
 
-const DEFAULT_AVATAR_URL = "uploads/default-avatar.jpg";
+const DEFAULT_AVATAR_URL = "/uploads/default-avatar.jpg";
 
 const register = async (req, res) => {
   try {
