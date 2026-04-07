@@ -2,17 +2,18 @@ const multer = require("multer");
 const path = require("path");
 
 // Definición dónde y cómo se guardan los archivos
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/"); // Es un middelware
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
-    cb(null, uniqueName);
-  },
-});
+const storage = process.env.VERCEL
+  ? multer.memoryStorage()
+  : multer.diskStorage({
+      destination: (req, file, cb) => {
+        cb(null, "uploads/"); // Es un middelware
+      },
+      filename: (req, file, cb) => {
+        const ext = path.extname(file.originalname);
+        const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1e9)}${ext}`;
+        cb(null, uniqueName);
+      },
+    });
 
 // Filtro para aceptar unicamente las imagenes
 

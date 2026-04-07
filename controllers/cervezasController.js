@@ -1,4 +1,5 @@
 const Cerveza = require("../models/modelCerveza");
+const { getStoredImageValue } = require("../utils/imageStorage");
 
 const toNumber = (value) => {
   if (value === undefined || value === null || value === "") return undefined;
@@ -53,7 +54,7 @@ const buildCervezaPayload = (req, currentCerveza = {}) => ({
   price: toNumber(req.body.price) ?? currentCerveza.price,
   stock: toNumber(req.body.stock) ?? currentCerveza.stock,
   rating: toNumber(req.body.rating) ?? currentCerveza.rating,
-  imagen: req.file ? req.file.path : (req.body.imagen ?? currentCerveza.imagen),
+  imagen: getStoredImageValue(req.file, req.body.imagen ?? currentCerveza.imagen),
   tastingNotes:
     toJsonObject(req.body.tastingNotes) ?? currentCerveza.tastingNotes,
   pairings: toJsonArray(req.body.pairings) ?? currentCerveza.pairings,

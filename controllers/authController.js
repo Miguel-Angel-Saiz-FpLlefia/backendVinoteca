@@ -1,6 +1,7 @@
 const User = require("../models/User"); // Ajusta a tu ruta de modelo
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { getStoredImageValue } = require("../utils/imageStorage");
 
 const DEFAULT_AVATAR_URL = "uploads/default-avatar.jpg";
 
@@ -19,7 +20,7 @@ const register = async (req, res) => {
 
     // 3. Crear el nuevo usuario
     // Si hay archivo en req.file, guardamos su ruta, si no, null o una por defecto
-    const fotoPath = req.file ? req.file.path : DEFAULT_AVATAR_URL; // Si no sube foto, usamos un avatar por defecto visible
+    const fotoPath = getStoredImageValue(req.file, DEFAULT_AVATAR_URL); // En local guarda ruta; en Vercel guarda data URL
 
     const nuevoUsuario = new User({
       nombre,

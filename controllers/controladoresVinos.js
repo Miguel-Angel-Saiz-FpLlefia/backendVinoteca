@@ -1,4 +1,5 @@
 const Vino = require("../models/modeloVino");
+const { getStoredImageValue } = require("../utils/imageStorage");
 
 const toNumber = (value) => {
   if (value === undefined || value === null || value === "") return undefined;
@@ -55,7 +56,7 @@ const buildVinoPayload = (req, currentVino = {}) => ({
   price: toNumber(req.body.price) ?? currentVino.price,
   stock: toNumber(req.body.stock) ?? currentVino.stock,
   rating: toNumber(req.body.rating) ?? currentVino.rating,
-  imagen: req.file ? req.file.path : (req.body.imagen ?? currentVino.imagen),
+  imagen: getStoredImageValue(req.file, req.body.imagen ?? currentVino.imagen),
   tastingNotes: toJsonObject(req.body.tastingNotes) ?? currentVino.tastingNotes,
   pairings: toJsonArray(req.body.pairings) ?? currentVino.pairings,
 });
