@@ -16,12 +16,12 @@ routerCervezas.get("/", getCervezas);
 routerCervezas.get("/:id", getCervezaById);
 routerCervezas.post(
   "/",
-  [isAuth, isAdminOrEditor, upload.single("imagen")],
+  [isAuth, isAdminOrEditor, upload.any()],
   createCerveza,
 );
 routerCervezas.put(
   "/:id",
-  [isAuth, isAdminOrEditor, upload.single("imagen")],
+  [isAuth, isAdminOrEditor, upload.any()],
   updateCerveza,
 );
 routerCervezas.delete("/:id", [isAuth, isAdminOrEditor], deleteCerveza);

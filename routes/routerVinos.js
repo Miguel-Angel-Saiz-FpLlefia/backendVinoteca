@@ -16,12 +16,12 @@ routerVino.get("/", getVinosAll);
 routerVino.get("/:id", getVinosById);
 routerVino.post(
   "/",
-  [isAuth, isAdminOrEditor, upload.single("imagen")],
+  [isAuth, isAdminOrEditor, upload.any()],
   createVino,
 );
 routerVino.put(
   "/:id",
-  [isAuth, isAdminOrEditor, upload.single("imagen")],
+  [isAuth, isAdminOrEditor, upload.any()],
   updateVino,
 );
 routerVino.delete("/:id", [isAuth, isAdminOrEditor], deleteVino);

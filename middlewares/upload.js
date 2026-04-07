@@ -37,7 +37,7 @@ const filterImage = (req, file, cb) => {
 const upload = multer({
   storage: storage, // Donde se va a guardar
   limits: {
-    fileSize: 1024 * 1024 * 2, // 2 Mb
+    fileSize: 1024 * 1024 * 4, // 4 Mb
   }, // El limite de tamaño del archivo
   fileFilter: filterImage, // Que tipo de archivo accepta
 });

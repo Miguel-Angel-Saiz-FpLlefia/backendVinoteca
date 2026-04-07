@@ -20,7 +20,7 @@ const register = async (req, res) => {
 
     // 3. Crear el nuevo usuario
     // Si hay archivo en req.file, guardamos su ruta, si no, null o una por defecto
-    const fotoPath = getStoredImageValue(req.file, DEFAULT_AVATAR_URL); // En local guarda ruta; en Vercel guarda data URL
+    const fotoPath = getStoredImageValue(req, DEFAULT_AVATAR_URL); // En local guarda ruta; en Vercel guarda data URL
 
     const nuevoUsuario = new User({
       nombre,

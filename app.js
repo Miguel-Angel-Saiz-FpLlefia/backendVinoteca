@@ -46,6 +46,29 @@ app.use("/api/cervezas", require("./routes/routesCervezas"));
 app.use("/api/pedidos", require("./routes/pedidoRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
 
+app.use((err, req, res, next) => {
+  if (err && err.name === "MulterError") {
+    if (err.code === "LIMIT_FILE_SIZE") {
+      return res.status(413).json({
+        error: "La imagen supera el tamaño máximo permitido de 4 MB.",
+      });
+    }
+
+    return res.status(400).json({
+      error: err.message || "Error al procesar la imagen",
+    });
+  }
+
+  if (err) {
+    console.error(err);
+    return res.status(500).json({
+      error: err.message || "Error interno del servidor",
+    });
+  }
+
+  next();
+});
+
 if (require.main === module) {
   const PORT = process.env.PORT || 4000;
   app.listen(PORT, () => console.log(`Servidor volando en el puerto ${PORT}`));

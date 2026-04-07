@@ -56,7 +56,7 @@ const buildVinoPayload = (req, currentVino = {}) => ({
   price: toNumber(req.body.price) ?? currentVino.price,
   stock: toNumber(req.body.stock) ?? currentVino.stock,
   rating: toNumber(req.body.rating) ?? currentVino.rating,
-  imagen: getStoredImageValue(req.file, req.body.imagen ?? currentVino.imagen),
+  imagen: getStoredImageValue(req, req.body.imagen ?? currentVino.imagen),
   tastingNotes: toJsonObject(req.body.tastingNotes) ?? currentVino.tastingNotes,
   pairings: toJsonArray(req.body.pairings) ?? currentVino.pairings,
 });
