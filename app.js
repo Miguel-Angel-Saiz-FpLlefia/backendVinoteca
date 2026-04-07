@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 require("dotenv").config();
 const connectDB = require("./config/db");
 
@@ -13,7 +14,7 @@ const corsOptions = {
 // 1. Middlewares Globales
 app.use(cors(corsOptions));
 app.use(express.json()); // Para leer JSON en el body
-app.use("/uploads", express.static("uploads")); // Para servir fotos
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads"))); // Para servir fotos
 
 app.use(async (req, res, next) => {
   if (req.method === "OPTIONS" || req.path === "/api/health") {
