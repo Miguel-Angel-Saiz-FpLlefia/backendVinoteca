@@ -245,3 +245,6 @@ Tots els endpoints tenen com a prefix general `/api`.
 * **`DELETE /api/users/:id`**
   * **Descripció**: Elimina un compte d'usuari del sistema.
   * **Accés**: Privat (Requereix Token JWT + Rol: `admin`).
+
+## Imagen pedido
+![alt text](pedido.png)
